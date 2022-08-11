@@ -1,20 +1,16 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { CategoriaSchema } from './interfaces/categorias/categoria.schema';
-import { JogadorSchema } from './interfaces/jogadores/jogador.schema';
+import { NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
+import { AppModule } from './app.module';
 
-@Module({
-  imports: [
-    MongooseModule.forRoot(
-      'mongodb://localhost:27017/smartranking?directConnection=true',
-      {
-        useUnifiedTopology: true,
-      },
-    ),
-    MongooseModule.forFeature([{ name: 'Categoria', schema: CategoriaSchema }]),
-    MongooseModule.forFeature([{ name: 'Jogador', schema: JogadorSchema }]),
-  ],
-  controllers: [],
-  providers: [],
-})
-export class AppModule {}
+async function bootstrap() {
+  const app = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://guest:guest@localhost:5672/smartranking2'],
+      queue: 'admin-backend',
+    },
+  });
+
+  await app.listen();
+}
+bootstrap();
