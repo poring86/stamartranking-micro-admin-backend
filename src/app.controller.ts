@@ -12,5 +12,7 @@ export class AppController {
   @EventPattern('criar-categoria')
   async criarCategoria(@Payload() categoria: Categoria) {
     console.log('categoria', categoria);
+
+    this.appService.criarCategoria(categoria);
   }
 }
