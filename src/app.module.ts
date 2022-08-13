@@ -8,7 +8,7 @@ import { AppService } from './app.service';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb://localhost:27017/smartranking?directConnection=true',
+      'mongodb://localhost:27017/sradmbackend?directConnection=true',
       {
         useUnifiedTopology: true,
       },
