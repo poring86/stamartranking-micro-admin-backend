@@ -40,4 +40,14 @@ export class AppService {
 
     return categoriaEncontrada;
   }
+
+  async atualizarCategoria(_id: string, categoria: Categoria): Promise<void> {
+    try {
+      await this.categoriaModel
+        .findOneAndUpdate({ _id }, { $set: categoria })
+        .exec();
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
+  }
 }
