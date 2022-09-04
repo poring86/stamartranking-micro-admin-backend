@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Jogador } from './interfaces/jogador.interface';
@@ -10,14 +10,11 @@ export class JogadoresService {
     @InjectModel('Jogador') private readonly jogadorModel: Model<Jogador>,
   ) {}
 
-  private readonly logger = new Logger(JogadoresService.name);
-
   async criarJogador(jogador: Jogador): Promise<void> {
     try {
       const jogadorCriado = new this.jogadorModel(jogador);
       await jogadorCriado.save();
     } catch (error) {
-      this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
   }
@@ -26,7 +23,6 @@ export class JogadoresService {
     try {
       return await this.jogadorModel.find().populate('categoria').exec();
     } catch (error) {
-      this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
   }
@@ -38,7 +34,6 @@ export class JogadoresService {
         .populate('categoria')
         .exec();
     } catch (error) {
-      this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
   }
@@ -49,7 +44,6 @@ export class JogadoresService {
         .findOneAndUpdate({ _id }, { $set: jogador })
         .exec();
     } catch (error) {
-      this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
   }
@@ -58,7 +52,6 @@ export class JogadoresService {
     try {
       await this.jogadorModel.deleteOne({ _id }).exec();
     } catch (error) {
-      this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
   }

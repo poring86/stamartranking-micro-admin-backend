@@ -23,8 +23,6 @@ export class CategoriasController {
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
 
-    console.log('categoria', categoria);
-
     try {
       await this.categoriasService.criarCategoria(categoria);
       await channel.ack(originalMsg);
